@@ -8,7 +8,7 @@ plugins {
 
 group = "dev.nexterias.folia-plugin"
 version = "1.0.0"
-description = "Assists in tracking the player."
+description = "Assist in player tracking."
 
 repositories {
     mavenCentral()
