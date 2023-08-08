@@ -1,0 +1,17 @@
+name: $name
+version: $version
+main: dev.nexterias.folia_plugin.player_tracker.Plugin
+description: $description
+load: POSTWORLD
+authors:
+  - InkoHX
+api-version: "$apiVersion"
+folia-supported: true
+
+commands:
+  set-target:
+    description: プレイヤーの追跡を補助します。
+    usage: /<command> <player>
+  clear-target:
+    description: プレイヤーの追跡を終了します。
+    usage: /<command>
