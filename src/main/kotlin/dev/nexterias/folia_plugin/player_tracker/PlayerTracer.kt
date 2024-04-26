@@ -7,7 +7,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 
-class PlayerTracer(val plugin: Plugin, val manager: PlayerTracerManager, val tracker: Player, target: Player) {
+class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target: Player) {
     var target: Player = target
         private set
 
@@ -34,10 +34,15 @@ class PlayerTracer(val plugin: Plugin, val manager: PlayerTracerManager, val tra
         if (!target.isOnline) throw Exception("Target is offline.")
 
         tracker.showBossBar(bossBar)
-        task = tracker.scheduler.runAtFixedRate(plugin, {
+        task = tracker.scheduler.runAtFixedRate(manager.plugin, {
             if (!target.isOnline) {
                 manager.remove(tracker)
-                tracker.sendMessage(Component.text("ターゲットがオフラインになったため追跡を終了しました。", NamedTextColor.RED))
+                tracker.sendMessage(
+                    Component.text(
+                        "ターゲットがオフラインになったため追跡を終了しました。",
+                        NamedTextColor.RED
+                    )
+                )
 
                 return@runAtFixedRate
             }
