@@ -10,7 +10,7 @@ class PlayerTracerManager(val plugin: Plugin) {
         get() = _tracers.toMap()
 
     fun getOrPut(tracker: Player, target: Player): PlayerTracer {
-        return _tracers.getOrPut(tracker.uniqueId) { PlayerTracer(plugin, tracker, target) }
+        return _tracers.getOrPut(tracker.uniqueId) { PlayerTracer(plugin, this, tracker, target) }
     }
 
     fun get(tracker: Player): PlayerTracer? {
