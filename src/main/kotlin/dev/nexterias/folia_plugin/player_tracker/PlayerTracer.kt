@@ -9,21 +9,13 @@ import org.bukkit.entity.Player
 
 enum class CompassDirection(val abbreviation: String) {
     S("南"),
-    SSW("南南西"),
     SW("南西"),
-    WSW("西南西"),
     W("西"),
-    WNW("西北西"),
     NW("北西"),
-    NNW("北北西"),
     N("北"),
-    NNE("北北東"),
     NE("北東"),
-    ENE("東北東"),
     E("東"),
-    ESE("東南東"),
     SE("南東"),
-    SSE("南南東"),
 }
 
 class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target: Player) {
@@ -50,7 +42,7 @@ class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target
     fun calculateDirection(): CompassDirection {
         val directionVector = target.location.clone().subtract(tracker.location)
         val yaw = ((directionVector.yaw % 360) + 360) % 360
-        val directionIndex = (Math.round(yaw / 22.5) % 16).toInt()
+        val directionIndex = (Math.round(yaw / 22.5) % 8).toInt()
 
         return CompassDirection.entries[directionIndex]
     }
