@@ -7,6 +7,25 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.entity.Player
 
+enum class CompassDirection(val abbreviation: String) {
+    S("南"),
+    SSW("南南西"),
+    SW("南西"),
+    WSW("西南西"),
+    W("西"),
+    WNW("西北西"),
+    NW("北西"),
+    NNW("北北西"),
+    N("北"),
+    NNE("北北東"),
+    NE("北東"),
+    ENE("東北東"),
+    E("東"),
+    ESE("東南東"),
+    SE("南東"),
+    SSE("南南東"),
+}
+
 class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target: Player) {
     var target: Player = target
         private set
@@ -26,6 +45,14 @@ class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target
 
     fun setTarget(target: Player) {
         this.target = target
+    }
+
+    fun calculateDirection(): CompassDirection {
+        val directionVector = target.location.clone().subtract(tracker.location)
+        val yaw = ((directionVector.yaw % 360) + 360) % 360
+        val directionIndex = (Math.round(yaw / 22.5) % 16).toInt()
+
+        return CompassDirection.entries[directionIndex]
     }
 
     fun start() {
@@ -62,6 +89,7 @@ class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target
                 bossBar.name(message)
             } else {
                 val distance = tracker.location.distance(target.location).toInt()
+                val direction = calculateDirection()
                 val message = Component.text()
                     .color(NamedTextColor.GRAY)
                     .append(Component.text(target.name, NamedTextColor.YELLOW, TextDecoration.BOLD))
@@ -70,6 +98,14 @@ class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target
                     .append(Component.text("距離:"))
                     .appendSpace()
                     .append(Component.text("${distance}m", NamedTextColor.YELLOW, TextDecoration.BOLD))
+                    .appendSpace()
+                    .append(
+                        Component.text(
+                            "方角: ${direction.abbreviation}",
+                            NamedTextColor.YELLOW,
+                            TextDecoration.BOLD
+                        )
+                    )
 
                 bossBar.name(message)
                 bossBar.progress(Math.exp(-0.01 * distance).toFloat())
