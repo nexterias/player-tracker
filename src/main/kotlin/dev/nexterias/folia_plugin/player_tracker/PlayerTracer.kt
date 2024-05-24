@@ -40,7 +40,7 @@ class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target
     }
 
     fun calculateDirection(): CompassDirection {
-        val location = target.location.clone().subtract(tracker.location)
+        val location = tracker.location.clone().subtract(target.location)
         val yaw = ((location.yaw % 360) + 360) % 360
         val compassDirectionIndex = (Math.round(yaw / 22.5) % 8).toInt()
 
