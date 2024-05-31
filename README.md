@@ -2,7 +2,7 @@
 
 **Assist in player tracking.**
 
-> **Warning**
+> [!Warning]
 > This plugin supports **Folia** only.
 
 ## Requirements
