@@ -5,6 +5,7 @@ import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
+import org.bukkit.World
 import org.bukkit.entity.Player
 
 class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target: Player) {
@@ -50,10 +51,16 @@ class PlayerTracer(val manager: PlayerTracerManager, val tracker: Player, target
             if (target.location.world.name != tracker.location.world.name) {
                 val textColor =
                     if (bossBar.name().color() == NamedTextColor.GRAY) NamedTextColor.RED else NamedTextColor.GRAY
+                val worldName = when(target.world.environment) {
+                    World.Environment.NORMAL -> "オーバーワールド"
+                    World.Environment.NETHER -> "ネザー"
+                    World.Environment.THE_END -> "ジ・エンド"
+                    else -> target.world.name
+                }
                 val message = Component.text()
                     .color(textColor)
                     .append(Component.text("現在"))
-                    .append(Component.text(target.name, NamedTextColor.YELLOW, TextDecoration.BOLD))
+                    .append(Component.text(worldName, NamedTextColor.YELLOW, TextDecoration.BOLD))
                     .append(Component.text("は"))
                     .append(Component.text(target.location.world.name, NamedTextColor.YELLOW, TextDecoration.BOLD))
                     .append(Component.text("に居ます。"))
